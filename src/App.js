@@ -26,18 +26,18 @@ function App() {
           className="absolute w-screen h-screen"
         />
         <Weather
-          city={data.name}
-          country={data.sys.country}
-          icon={data.weather[0].icon}
-          iconDescription={data.weather[0].description}
-          highlow={`${data.main.temp_max}/${data.main.temp_min}`}
-          humidity={data.main.humidity}
-          pressrue={data.main.pressure}
-          visibility={data.visibility}
-          windS={data.wind.speed}
-          windD={data.wind.deg}
-          sunR={data.sys.sunrise}
-          sunS={data.sys.sunset}
+          city={data?.name}
+          country={data?.sys?.country}
+          icon={data?.weather?.[0]?.icon}
+          iconDescription={data?.weather?.[0]?.description}
+          highlow={`${data?.main?.temp_max}/${data?.main?.temp_min}`}
+          humidity={data?.main?.humidity}
+          pressrue={data?.main?.pressure}
+          visibility={data?.visibility}
+          windS={data?.wind?.speed}
+          windD={data?.wind?.deg}
+          sunR={data?.sys?.sunrise}
+          sunS={data?.sys?.sunset}
         />
       </div>
     </div>
