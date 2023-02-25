@@ -26,9 +26,10 @@ function App() {
           className="absolute w-screen h-screen"
         />
         <Weather
+          time={new Date(data?.dt).toLocaleTimeString()}
           city={data?.name}
           country={data?.sys?.country}
-          icon={data?.weather?.[0]?.icon}
+          icon={'http://openweathermap.org/img/wn/04n@2x.png'} // data?.weather?.[0]?.icon
           iconDescription={data?.weather?.[0]?.description}
           highlow={`${data?.main?.temp_max}/${data?.main?.temp_min}`}
           humidity={data?.main?.humidity}
@@ -36,8 +37,8 @@ function App() {
           visibility={data?.visibility}
           windS={data?.wind?.speed}
           windD={data?.wind?.deg}
-          sunR={data?.sys?.sunrise}
-          sunS={data?.sys?.sunset}
+          sunR={new Date(data?.sys?.sunrise * 1000).toLocaleTimeString()}
+          sunS={new Date(data?.sys?.sunset * 1000).toLocaleTimeString()}
         />
       </div>
     </div>
