@@ -1,53 +1,76 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import './index.css'
-import Weather from './Weather'
+import { Fragment } from 'react'
 
-function App() {
-  const [data, setData] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+function Weather(props) {
+  const {
+    isLoading,
+    time,
+    city,
+    country,
+    icon,
+    iconDescription,
+    highlow,
+    humidity,
+    pressrue,
+    visibility,
+    windS,
+    windD,
+    sunR,
+    sunS
+  } = props
 
-  useEffect(() => {
-    getWeather()
-  }, [])
+  const data = [
+    { title: 'High/Low', value: highlow },
+    { title: 'Wind', value: `${windS} km/hr` },
+    { title: 'Humidity', value: `${humidity}%` },
+    { title: 'Wind Direction', value: `${windD}° deg` },
+    { title: 'Pressrue', value: `${pressrue} hPa` },
+    { title: 'Sunrise', value: sunR },
+    { title: 'Visibility', value: visibility },
+    { title: 'Sunset', value: sunS }
+  ]
 
-  async function getWeather() {
-    setIsLoading(true)
-    const data = await axios(
-      'https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=82fc61551d0b36e7d890acd163c06d9f'
-    )
-    setData(data.data)
-    setIsLoading(false)
-  }
-  console.log(data)
-  return (
-    <div className="">
-      <div className="relative ">
-        <img
-          alt="Background"
-          src="images/gg-bg.jpeg"
-          className="absolute w-screen h-screen"
-        />
-
-        <Weather
-          isLoading={isLoading}
-          time={new Date(data?.dt).toLocaleTimeString()}
-          city={data?.name}
-          country={data?.sys?.country}
-          icon={'http://openweathermap.org/img/wn/04n@2x.png'} // data?.weather?.[0]?.icon
-          iconDescription={data?.weather?.[0]?.description}
-          highlow={`${data?.main?.temp_max}/${data?.main?.temp_min}`}
-          humidity={data?.main?.humidity}
-          pressrue={data?.main?.pressure}
-          visibility={data?.visibility}
-          windS={data?.wind?.speed}
-          windD={data?.wind?.deg}
-          sunR={new Date(data?.sys?.sunrise * 1000).toLocaleTimeString()}
-          sunS={new Date(data?.sys?.sunset * 1000).toLocaleTimeString()}
-        />
+  function WeatherData(props) {
+    return (
+      <div className="border-b-2 border-b-gray-300  grid grid-cols-2 text-center items-end pb-5">
+        <b>{props.title}</b>
+        <p>{props.value}</p>
       </div>
-    </div>
+    )
+  }
+
+  return (
+    <section className="absolute w-screen h-screen flex justify-center gap-x-10 pt-[100px] px-5">
+      <div className="bg-[rgba(248,250,252,0.5)]  rounded-md w-full h-[400px] max-w-[270px] flex flex-col justify-center items-center gap-5 shadow-lg">
+        {isLoading ? (
+          <div className="m-auto text-5xl">Loading...</div>
+        ) : (
+          <Fragment>
+            <b className="text-8xl">31</b>
+            <img
+              alt={iconDescription}
+              src={icon}
+              className="w-[80px] h-[80px]"
+            />
+            <p>{time}</p>
+            <b>
+              {city},{country}
+            </b>
+          </Fragment>
+        )}
+      </div>
+      <div className=" bg-[rgba(248,250,252,0.5)] rounded-md px-6 pb-8 w-full max-w-[600px] h-full max-h-[400px]  gap-x-10 grid grid-cols-2  shadow-lg">
+        {isLoading ? (
+          <div className="m-auto text-8xl">Loading...</div>
+        ) : (
+          data.map((data, index) => {
+            return (
+              <WeatherData key={index} title={data.title} value={data.value} />
+            )
+          })
+        )}
+      </div>
+    </section>
   )
 }
 
-export default App
+export default Weather
