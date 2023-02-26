@@ -5,16 +5,19 @@ import Weather from './Weather'
 
 function App() {
   const [data, setData] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     getWeather()
   }, [])
 
   async function getWeather() {
+    setIsLoading(true)
     const data = await axios(
       'https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=82fc61551d0b36e7d890acd163c06d9f'
     )
     setData(data.data)
+    setIsLoading(false)
   }
   console.log(data)
   return (
@@ -25,7 +28,9 @@ function App() {
           src="images/gg-bg.jpeg"
           className="absolute w-screen h-screen"
         />
+
         <Weather
+          isLoading={isLoading}
           time={new Date(data?.dt).toLocaleTimeString()}
           city={data?.name}
           country={data?.sys?.country}
